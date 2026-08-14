@@ -180,19 +180,21 @@ description_markdown = """
 > * 本專案使用 Google API 免費測試方案 (Free Tier Rate Limit)。若短時間內連續發送訊息觸發流量限制 (429 Rate Limit)，系統會啟動 **Auto-Retry & Model Failover** 容錯機制。
 > * 如遇到回應較慢或提示額度上限，請稍候 30-40 秒再試，感謝您的體貼測試！
 """
-demo = gr.ChatInterface(
-    fn=chat_response,
-    title="Matcha Store AI Assistant",
-    description=description_markdown,
-    examples=[
-        "介紹下「翠風茶園」既歷史同風格？",
-        "我想搵一款適合整抹茶 Lattee 既產品，有冇特價？",
-        "烘焙專用既抹茶粉有貨嗎？幾多錢？",
-        "買滿幾多錢免運費？可唔可以去門市自取？"
-    ],
-    # 💡 加上這行：抹茶綠 Soft 主題
-    theme=gr.themes.Soft(primary_hue="emerald", neutral_hue="slate")
-)
+
+
+# 💡 用 gr.Blocks 指定主題包著 ChatInterface
+with gr.Blocks(theme=gr.themes.Soft(primary_hue="emerald", neutral_hue="slate")) as demo:
+    gr.ChatInterface(
+        fn=chat_response,
+        title="Matcha Store AI Assistant",
+        description=description_markdown,
+        examples=[
+            "介紹下「翠風茶園」既歷史同風格？",
+            "我想搵一款適合整抹茶 Lattee 既產品，有冇特價？",
+            "烘焙專用既抹茶粉有貨嗎？幾多錢？",
+            "買滿幾多錢免運費？可唔可以去門市自取？"
+        ]
+    )
 
 if __name__ == "__main__":
     # 讀取 Render 自動指派的 PORT，預設為 7860
