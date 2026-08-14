@@ -1,0 +1,20 @@
+[
+  {
+    "id": "SF-001",
+    "name": "翠風 - 極上御抹茶「天雲」",
+    "grade": "競賽級 / 官能級",
+    "flavor_profile": "極濃鮮甜、高雅海苔香",
+    "taste_notes": "入口滑順如絲，毫無苦澀，回甘持久",
+    "usage": "適合濃茶 (Koicha)、頂級薄茶",
+    "base_price": 280
+  },
+  {
+    "id": "SF-002",
+    "name": "翠風 - 特選薄茶「瑞雲」",
+    "grade": "特級儀式級 (Ceremonial Grade)",
+    "flavor_profile": "鮮甜與清爽茶香平衡，回甘帶微豆香",
+    "taste_notes": "質地輕盈，口感清爽",
+    "usage": "日常薄茶、高級無糖抹茶拿鐵",
+    "base_price": 180
+  }
+]
