@@ -159,7 +159,7 @@ Google Gemini API 伺服器目前處於高流量狀態 (High Demand)。
 
 # 6. Gradio UI 介面
 description_markdown = """
-### 🍵 抹茶小助手 - AI 客服專案 PoC
+### 🍵 綠韻抹茶小助手 - AI 客服專案 PoC
 歡迎測試對話！本專案整合 **Google Gemini API** 與 **Function Calling (庫存/價格/圖片實時查詢)**。
 
 > 💡 **測試提示 (System Notice)**：
