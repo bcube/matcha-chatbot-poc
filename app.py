@@ -149,6 +149,8 @@ Google Gemini API 伺服器目前處於高流量狀態 (High Demand)。
 > `{last_error_msg}`
 
 💡 *請稍等幾秒後再發送一次訊息，感謝您的測試！*"""
+
+
     tools = [check_inventory_and_price]
     
     contents = []
@@ -166,31 +168,6 @@ Google Gemini API 伺服器目前處於高流量狀態 (High Demand)。
 
     contents.append(types.Content(role="user", parts=[types.Part.from_text(text=user_message)]))
 
-    # 💡 備用模型清單：當主要模型 503 過載時，自動順序嘗試備用模型
-    models_to_try = ["gemini-flash-latest", "gemini-2.5-flash", "gemini-2.5-pro"]
-
-    for model_name in models_to_try:
-        max_retries = 2
-        for attempt in range(max_retries):
-            try:
-                # print(f"🔄 嘗試使用模型: {model_name} (第 {attempt + 1} 次)")
-                response = client.models.generate_content(
-                    model=model_name,
-                    contents=contents,
-                    config=types.GenerateContentConfig(
-                        system_instruction=SYSTEM_INSTRUCTION,
-                        tools=tools,
-                        temperature=0.3
-                    )
-                )
-                return response.text
-
-            except Exception as e:
-                print(f"⚠️ [{model_name}] 呼叫失敗 (第 {attempt + 1}/{max_retries} 次): {e}")
-                time.sleep(1) # 稍作等待
-
-    # 若所有模型皆繁忙時的降級提示
-    return "🍵 抹茶小助手目前伺服器流量較大，請您稍後再試一次，我會立刻為您服務！"
 
 # 6. Gradio UI 介面
 
@@ -216,4 +193,8 @@ demo = gr.ChatInterface(
 )
 
 if __name__ == "__main__":
-    demo.launch()
+    # 讀取 Render 自動指派的 PORT，預設為 7860
+    server_port = int(os.environ.get("PORT", 7860))
+    
+    # 務必指定 server_name="0.0.0.0" 讓 Render 能對外連線
+    demo.launch(server_name="0.0.0.0", server_port=server_port)
