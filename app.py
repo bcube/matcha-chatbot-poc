@@ -189,7 +189,9 @@ demo = gr.ChatInterface(
         "我想搵一款適合整抹茶 Lattee 既產品，有冇特價？",
         "烘焙專用既抹茶粉有貨嗎？幾多錢？",
         "買滿幾多錢免運費？可唔可以去門市自取？"
-    ]
+    ],
+    # 💡 加上這行：抹茶綠 Soft 主題
+    theme=gr.themes.Soft(primary_hue="emerald", neutral_hue="slate")
 )
 
 if __name__ == "__main__":
