@@ -10,8 +10,9 @@ from google.genai import errors, types
 client = genai.Client()
 
 # 💡 圖片基礎網址設定 (請將 your-username 替換為你的 GitHub 帳號)
+# 💡 修改為你真正的 GitHub 帳號與 Repo 名稱
 GITHUB_USER = "bcube" 
-REPO_NAME = "matcha-chatbot-poc"
+REPO_NAME = "matcha-chatbot-poc"  
 RAW_BASE_URL = f"https://raw.githubusercontent.com/{GITHUB_USER}/{REPO_NAME}/main/img"
 
 # 2. 自動讀取 knowledge_base 資料夾結構
@@ -60,10 +61,10 @@ STORE_KNOWLEDGE_BASE = load_knowledge_base()
 
 # 3. 模擬動態庫存資料庫 (加入對應的圖片檔名)
 INVENTORY_DB = {
-    "SF-001": {"name": "翠風 - 極上御抹茶「天雲」", "stock": 5,  "sale_price": 280, "on_sale": False, "img": "sf001.jpg"}, 
-    "SF-002": {"name": "翠風 - 特選薄茶「瑞雲」",   "stock": 12, "sale_price": 160, "on_sale": True,  "img": "sf002.jpg"},  
-    "MD-001": {"name": "綠山 - 日常手作抹茶「山綠」", "stock": 3,  "sale_price": 95,  "on_sale": True,  "img": "md001.jpg"},  
-    "KM-001": {"name": "木漏 - 烘焙專用抹茶粉",     "stock": 0,  "sale_price": 85,  "on_sale": False, "img": "km001.jpg"}, 
+    "SF-001": {"name": "翠風 - 極上御抹茶「天雲」", "stock": 5,  "sale_price": 280, "on_sale": False}, 
+    "SF-002": {"name": "翠風 - 特選薄茶「瑞雲」",   "stock": 12, "sale_price": 160, "on_sale": True},  
+    "MD-001": {"name": "綠山 - 日常手作抹茶「山綠」", "stock": 3,  "sale_price": 95,  "on_sale": True},  
+    "KM-001": {"name": "木漏 - 烘焙專用抹茶粉",     "stock": 0,  "sale_price": 85,  "on_sale": False}, 
 }
 
 def check_inventory_and_price(product_id_or_name: str) -> str:
@@ -82,7 +83,7 @@ def check_inventory_and_price(product_id_or_name: str) -> str:
                 "status": "🔥 特價優惠中" if item["on_sale"] else "原價發售",
                 "availability": "❌ 暫時缺貨" if item["stock"] == 0 else f"✅ 現貨剩餘 {item['stock']} 件",
                 # 💡 動態回傳 GitHub Raw 圖片網址
-                "image_url": f"{RAW_BASE_URL}/{item['img']}"
+                "image_url": f"{RAW_BASE_URL}/{p_id}.png"
             }, ensure_ascii=False)
             
     return json.dumps({"note": "未找到指定產品，請確認產品 ID 或名稱。"}, ensure_ascii=False)
@@ -118,10 +119,11 @@ def chat_response(user_message, history):
     contents.append(types.Content(role="user", parts=[types.Part.from_text(text=user_message)]))
 
     models_to_try = [
-        "gemini-flash-latest",     
-        "gemini-2.5-flash",        
-        "gemini-1.5-flash"
-    ]
+            "gemini-flash-latest",     # 動態指向最新的 Flash 模型
+            "gemini-3.7-flash",        # 最新旗艦 Flash
+            "gemini-3.6-flash",        # 穩定版 Gemini 3.6 Flash
+            "gemini-3.5-flash-lite"    # 超低延遲/省 Quota 備用模型
+        ]
 
     last_error_msg = ""
 
